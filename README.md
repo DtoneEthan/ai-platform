@@ -43,28 +43,61 @@
 
 ## 🚀 在线部署（推荐）
 
-### 方案一：GitHub Pages + Render（全免费）
+### 方案一：GitHub Pages + Railway（全免费，无需信用卡）
 
-#### 第1步：部署后端到 Render
+#### 第1步：部署后端到 Railway
 
-1. Fork 本仓库到你的 GitHub
-2. 访问 [Render.com](https://render.com) 注册账号（免费）
-3. 点击 **New + → Blueprint**
-4. 连接你的 GitHub 仓库，Render 会自动读取 `render.yaml`
-5. 点击 **Apply**，等待部署完成
-6. 记录后端地址，例如 `https://ai-platform-api.onrender.com`
+1. 访问 [Railway.app](https://railway.app) 注册（支持 GitHub 登录，免费）
+2. 点击 **New Project → Deploy from GitHub repo**
+3. 选择 `DtoneEthan/ai-platform` 仓库
+4. Railway 会自动读取 `railway.json` 和 `Dockerfile.railway`
+5. 添加 PostgreSQL 数据库插件：**New → Database → Add PostgreSQL**
+6. 在 Variables 中添加环境变量：
+   - `ADMIN_USERNAME`: `admin`
+   - `ADMIN_PASSWORD`: `你的密码`
+   - `ADMIN_EMAIL`: `admin@ai-platform.local`
+   - `SECRET_KEY`: 随机字符串（如 `openssl rand -hex 32`）
+   - `OLLAMA_HOST`: 你的 Ollama 地址（如 `http://你的VPS:11434`）
+   - `ALGORITHM`: `HS256`
+   - `ACCESS_TOKEN_EXPIRE_MINUTES`: `1440`
+7. 部署完成后记录后端地址，例如 `https://ai-platform-production.up.railway.app`
 
-**注意**：Render 免费版的后端需要 Ollama 支持。由于 Render 不直接支持 GPU，你需要：
-- 在本地或 VPS 运行 Ollama，并在 Render 环境变量中设置 `OLLAMA_HOST` 指向它
-- 或者使用 OpenAI 兼容的 API 替代
+> ⚠️ Railway 的 `DATABASE_URL` 会自动注入，无需手动设置
 
 #### 第2步：部署前端到 GitHub Pages
 
 1. 在 GitHub 仓库的 **Settings → Secrets and variables → Actions → Variables** 中添加：
-   - `VITE_API_URL`: 你的 Render 后端地址，如 `https://ai-platform-api.onrender.com`
+   - `VITE_API_URL`: 你的 Railway 后端地址
 2. 在 **Settings → Pages** 中，将 Source 设为 **GitHub Actions**
 3. 推送代码到 `main` 分支，GitHub Actions 会自动部署
-4. 访问 `https://你的用户名.github.io/ai-platform`
+4. 访问 `https://DtoneEthan.github.io/ai-platform`
+
+### 方案二：GitHub Pages + Koyeb（免费，无需信用卡）
+
+Koyeb 提供永久免费的 2 个服务实例：
+
+1. 访问 [Koyeb.com](https://koyeb.com) 注册
+2. 点击 **Create App → From GitHub**
+3. 选择仓库，构建方式选 **Dockerfile**，路径 `Dockerfile.railway`
+4. 添加 PostgreSQL 数据库（Koyeb 免费提供）
+5. 配置环境变量同上
+6. 部署后获取地址
+
+### 方案三：GitHub Pages + 本地/自有服务器
+
+如果你有 VPS 或本地服务器：
+
+```bash
+# 在服务器上
+git clone https://github.com/DtoneEthan/ai-platform
+cd ai-platform
+docker-compose up -d
+# 后端运行在 :8000，配置nginx反向代理即可
+```
+
+> 💡 **Ollama 提示**：免费云平台上 GPU 资源有限，建议：
+> - 在本地运行 Ollama，通过 `OLLAMA_HOST` 让云端后端连接
+> - 或使用任意 OpenAI 兼容 API 替换 `ai_service.py` 中的调用
 
 ---
 
