@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ai_platform
+      POSTGRES_USER: ai_user
+      POSTGRES_PASSWORD: ai_password_2024
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ai_user -d ai_platform"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql+asyncpg://ai_user:ai_password_2024@db:5432/ai_platform
+      SECRET_KEY: change-me-to-a-random-secret-key-in-production
+      OLLAMA_HOST: http://host.docker.internal:11434
+      ADMIN_USERNAME: admin
+      ADMIN_EMAIL: admin@ai-platform.local
+      ADMIN_PASSWORD: admin123456
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: ai-platform-api
+    runtime: python
+    plan: free
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ai-platform-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: OLLAMA_HOST
+        value: http://localhost:11434
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_EMAIL
+        value: admin@ai-platform.local
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "1440"
+
+databases:
+  - name: ai-platform-db
+    plan: free
+    postgresMajorVersion: 16
