@@ -4,7 +4,7 @@ import { useAuthStore } from './store/authStore';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Chat from './pages/Chat';
-import Agent from './pages/Agent';
+import Works from './pages/Works';
 import Admin from './pages/Admin';
 import Layout from './components/common/Layout';
 
@@ -74,7 +74,7 @@ function App() {
         >
           <Route index element={<Navigate to="/chat" replace />} />
           <Route path="chat" element={<Chat />} />
-          <Route path="agent" element={<Agent />} />
+          <Route path="works" element={<Works />} />
           <Route
             path="admin"
             element={

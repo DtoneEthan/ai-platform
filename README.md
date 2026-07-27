@@ -1,8 +1,8 @@
 # AI Platform - AI在线软件
 
-一款免费可用的AI在线软件，自带问答和Agent功能，通过邀请码机制控制用户注册。
+一款免费可用的AI在线软件，自带智能问答和 Ethan.X 工作室作品展示，通过邀请码机制控制用户注册。
 
-> 🌐 **在线演示**: [GitHub Pages 前端](https://你的用户名.github.io/ai-platform) + [Render 后端](https://你的服务.onrender.com)
+> 🌐 **在线演示**: [GitHub Pages 前端](https://DtoneEthan.github.io/ai-platform) + [Railway 后端](https://你的服务.up.railway.app)
 
 ## 功能特性
 
@@ -13,10 +13,10 @@
 - 多模型支持（通过Ollama切换）
 - 对话历史管理
 
-### AI Agent
-- 自主工具调用：计算器、Python执行、网络搜索
-- 工具调用过程可视化（思考链展示）
-- 复杂任务分步执行
+### Ethan.X 工作室作品
+- 展示工作室出品的各类在线小工具
+- 每款作品附带一句话中文简介
+- 点击卡片即可在新标签页打开体验
 
 ### 邀请码系统
 - 管理员生成邀请码（可设次数和有效期）
@@ -36,8 +36,7 @@
 | 后端 | Python FastAPI + SQLAlchemy + Alembic |
 | 数据库 | PostgreSQL 16 |
 | AI引擎 | Ollama（本地开源模型） |
-| Agent | 自定义Agent引擎（支持工具调用） |
-| 部署 | Docker Compose / Render / GitHub Pages |
+| 部署 | Docker Compose / Railway / GitHub Pages |
 
 ---
 
@@ -226,8 +225,7 @@ ai-platform/
 | POST | /api/chat | 发送消息(SSE) | 登录 |
 | GET | /api/conversations | 对话列表 | 登录 |
 | DELETE | /api/conversations/{id} | 删除对话 | 登录 |
-| POST | /api/agent/run | 执行Agent(SSE) | 登录 |
-| GET | /api/agent/history | Agent历史 | 登录 |
+| GET | /api/models | 模型列表 | 登录 |
 | GET | /api/admin/stats | 系统统计 | 管理员 |
 | POST | /api/admin/invite-codes | 生成邀请码 | 管理员 |
 | GET | /api/admin/invite-codes | 邀请码列表 | 管理员 |

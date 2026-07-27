@@ -4,6 +4,7 @@ import { useAuthStore } from '../../store/authStore';
 import {
   MessageSquare,
   Bot,
+  LayoutGrid,
   Shield,
   LogOut,
   Menu,
@@ -17,7 +18,7 @@ export default function Layout() {
 
   const navItems = [
     { path: '/chat', icon: MessageSquare, label: 'AI 问答' },
-    { path: '/agent', icon: Bot, label: 'Agent' },
+    { path: '/works', icon: LayoutGrid, label: '工作室作品' },
     ...(user?.is_admin
       ? [{ path: '/admin', icon: Shield, label: '管理后台' }]
       : []),
